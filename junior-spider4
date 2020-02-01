@@ -1,0 +1,31 @@
+import urllib.request
+import re
+
+def gethtmlcontent(url):
+    page = urllib.request.urlopen(url)
+    return page.read()
+
+def getjpgs(html):
+    jpgreg = re.compile(r'<img.+?src="(.+?\.jpg)"width')
+    jpgs = re.findall(jpgreg,html)
+    return jpgs
+def downloadjpg(imgurl, filename):
+    urllib.urlretrieve(imgurl,filename)
+
+def batchdownloadjpgs(imgurls,path='D:/test/'):
+    count = 1
+    for url in imgurls:
+        downloadjpg(url, ''.join([path,'{0}.jpg'.format(count)]))
+        print('downloading'+str(count)+'pic')
+        count = count +1
+
+def download(url):
+    html = gethtmlcontent(url)
+    jpgs = getjpgs(html)
+    batchdownloadjpgs(jpgs)
+def main():
+    url = "http://tieba.baidu.com/p/2256306796"
+    download(url)
+
+if __name__=='__main__':
+    main()
