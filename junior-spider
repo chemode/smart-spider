@@ -1,8 +1,24 @@
 import urllib.request #import libs
 import chardet
+import  re
 
 response = urllib.request.urlopen("http://tieba.baidu.com/index.html") #open url
 html = response.read() #read url
 chardit1 = chardet.detect(html) #detect the coding
 print(chardit1) #print the coding
-print(html.decode(chardit1['encoding'])) #decoding the url with the correct coding
+#print(html.decode(chardit1['encoding'])) #decoding the url with the correct coding
+
+htmlcode = html.decode(chardit1['encoding'])
+
+pagefile = open('pagecode.txt','wb')
+pagefile.write(html)
+pagefile.close()
+
+reg = r'src="(.+?\.jpg)"'
+reg_img = re.compile(reg)
+imglist = reg_img.findall(htmlcode)
+x = 0
+for img in imglist:
+    print(img)
+    urllib.request.urlretrieve(img,'%s.jpg' %x)
+    x += 1
