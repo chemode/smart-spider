@@ -1,0 +1,8 @@
+import urllib.request #import libs
+import chardet
+
+response = urllib.request.urlopen("http://tieba.baidu.com/index.html") #open url
+html = response.read() #read url
+chardit1 = chardet.detect(html) #detect the coding
+print(chardit1) #print the coding
+print(html.decode(chardit1['encoding'])) #decoding the url with the correct coding
